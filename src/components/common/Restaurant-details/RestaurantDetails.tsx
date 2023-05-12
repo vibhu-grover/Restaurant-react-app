@@ -34,88 +34,89 @@ const madAboutPizza ={
   
 
 const RestaurantDetails=(props: Props)=>{
-        const [ status , setStatus ] = useState<LoadingStatus>('Loading');
-        const [restaurant , setRestaurant ] = useState<IRestaurant|null>(null);
-        const [ error, setError ] =useState<Error | null>(null);
+    const [ status , setStatus ] = useState<LoadingStatus>('Loading');
+    const [restaurant , setRestaurant ] = useState<IRestaurant|null>(null);
+    const [ error, setError ] =useState<Error | null>(null);
 
-        const loadRestaurant=()=> {
-            setTimeout(()=>{
-                setRestaurant(madAboutPizza);
-                setStatus('Loaded');
-            },3000);
-        };
+    const loadRestaurant=()=> {
+        setTimeout(()=>{
+            setRestaurant(madAboutPizza);
+            setStatus('Loaded');
+        },3000);
+    };
 
-        useEffect (loadRestaurant,[]);
-            let el;
-            switch(status){
-                case 'Loading':
-                    el=(
-                        <LoadingIndicator 
-                        size='large'
-                        message='Please wait.Fetching Restaurant details'
-                        />
-                    );
-                    break;
-                case 'Loaded':
-                    const{
-                        name,
-                        description,
-                        cuisines,
-                        opens,
-                        closes,
-                        rating,
-                        numRatings,
-                        costForTwo,
-                        imageUrl
-                    }=restaurant as IRestaurant;
-                    el=(
-                        <Row >
-                            <Col xs={12}>
-                                <h1>{name}</h1>
-                                <hr/>
-                            </Col>
-                            
-                               <Col xs={12} lg={4}>
-                                <img 
-                                src={`${process.env.REACT_APP_API_BASE_URL} ${imageUrl}`}
-                                alt={name}
-                                className='w-100'
-                                />
-                               </Col>
-                               <Col xs={12 }lg={8}>
-                                <div>
-                                    {
-                                        cuisines.map(
-                                            cuisine=> (
-                                                <Badge bg="primary me-2 " 
-                                                key={cuisine}
-                                                >
-                                                    {cuisine}
-                                                </Badge>
-                                            )
-                                        )
-
-                                    }
-                                </div >
-                               
-                                <div className='fs-5 my-2'>
-                                    {description}
-                                </div>
-                                <Row xs={3} className='text-sm' >
-                                    <col>
-                                    <FontAwesomeIcon icon={faClock}/>
-                                    <span className='ms-2'>{opens} - {closes}</span>
-                                    </col>
-                                    <col> 
-                                    <Rating value={rating} className='me-2'/>
-                                    {rating} ({numRatings} ratings)
-                                    </col>
-                                    <col></col>
-                                </Row>
-                               </Col>
-                            
-                        </Row>
-                    );
+    useEffect (loadRestaurant,[]);
+    let el;
+    switch(status){
+        case 'Loading':
+        el=(
+            <LoadingIndicator 
+                size='large'
+                message='Please wait.Fetching Restaurant details'
+            />
+        );
+            break;
+        case 'Loaded':
+        const{
+                name,
+                description,
+                cuisines,
+                opens,
+                closes,
+                rating,
+                numRatings,
+                costForTwo,
+                imageUrl
+        }=restaurant as IRestaurant;
+        el = (
+            <>
+            <Row>
+                <Col xs={12}>
+                    <h1>{name}</h1>
+                        <hr />
+                </Col>
+                <Col xs={12} lg={4} className="my-2">
+                    <img 
+                        src={`${process.env.REACT_APP_API_BASE_URL}${imageUrl}`}
+                        alt={name}
+                        className="w-100"
+                    />
+                </Col>
+                <Col xs={12} lg={8} className="my-2">
+                    <div>
+                    {
+                        cuisines.map(
+                            cuisine => (
+                            <Badge
+                            bg="primary me-2"
+                            key={cuisine}
+                            >
+                            {cuisine}
+                            </Badge>
+                            )
+                        )
+                    }
+                    </div>
+                    <div className="fs-5 my-2">
+                        {description}
+                    </div>
+                    <Row xs={3} className="text-sm">
+                        <Col>
+                            <FontAwesomeIcon icon={faClock} />
+                            <span className="ms-2">{opens} - {closes}</span>
+                        </Col>
+                        <Col>
+                            <Rating value={rating} className="me-2" />
+                            {rating} ({numRatings} ratings)
+                        </Col>
+                        <Col>
+                            Cost for two: Rs. {costForTwo}
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>    
+            </>   
+        );
                     break;
                 case 'Error Loading':
                     el=(
@@ -124,7 +125,7 @@ const RestaurantDetails=(props: Props)=>{
                         </Alert>
                     );
                     break;
-            }
+    }
             return el;
     
        
